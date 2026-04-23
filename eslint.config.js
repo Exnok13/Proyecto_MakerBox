@@ -6,7 +6,13 @@ export default [
     // Ignorar carpetas pesadas o automáticas
     // Se agregaron nuevas ignoraciones
 
-    ignores: ['**/generated/**', '**/fronted/dist/**','node_modules/', 'dist/', 'build/']
+    ignores: [
+    'backend/generated/**', 
+    'fronted/dist/**', 
+    'node_modules/', 
+    'dist/', 
+    'build/'
+  ]
   
   },
   {
