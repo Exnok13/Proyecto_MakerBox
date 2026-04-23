@@ -32,8 +32,8 @@ jobs:
     - name: Instalar dependencias del Backend
       run: cd backend && npm install
     
-    - name: Instalar dependencias del fronted
-      run: cd frontend && npm install
+    ##- name: Instalar dependencias del fronted
+     ## run: cd frontend && npm install
 
     - name: Generar cliente de Prisma
       run: npx prisma generate --schema=./backend/prisma/schema.prisma
