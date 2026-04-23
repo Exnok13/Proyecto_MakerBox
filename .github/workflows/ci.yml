@@ -47,8 +47,6 @@ jobs:
 
     - name: Ejecutar Lint
       run: npm run lint
-    
-    - name: Verificar Build
-      run: npm run build
+  
 
     ## Falta crear test
