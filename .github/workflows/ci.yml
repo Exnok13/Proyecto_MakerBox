@@ -35,6 +35,12 @@ jobs:
     - name: Instalar dependencias del fronted
       run: cd fronted && npm install
 
+    - name: Verificar Build del Backend
+      run: cd backend && npm run build
+
+    - name: Verificar Build del Frontend
+      run: cd fronted && npm run build
+
     - name: Generar cliente de Prisma
       run: npx prisma generate --schema=./backend/prisma/schema.prisma
 
