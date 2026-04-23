@@ -56,7 +56,7 @@ jobs:
           fetch-depth: 0
 
       - name: Correr Super-Linter
-        uses: github/super-linter@v5
+        uses: github/super-linter/slim@v6
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
@@ -67,7 +67,6 @@ jobs:
           VALIDATE_JAVASCRIPT_ES: true
           VALIDATE_TYPESCRIPT_ES: true          
           VALIDATE_YAML: true
-          VALIDATE_JSON: false
           
-          FILTER_REGEX_EXCLUDE: (.*eslint\.config\..*|.*package-lock\.json)
+          FILTER_REGEX_EXCLUDE: (.*package-lock\.json|.*eslint\.config\..*)
   ## Falta crear test
