@@ -10,25 +10,33 @@ on:
 
 jobs:
   build-and-test:
-    # 3. ¿En qué sistema operativo correrá?
+ 
     runs-on: ubuntu-latest
 
-    # 4. ¿Cuáles son los pasos exactos a seguir?
+ 
     steps:
-    # Paso A: Traer (checkout) el código de tu repositorio a la máquina virtual
+ 
     - name: Checkout del código
       uses: actions/checkout@v4
 
-    # Paso B: Configurar el entorno (Ejemplo: Node.js)
+ 
     - name: Configurar Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20' # Puedes cambiar esto a la versión que necesites
+        node-version: '22'
 
-    # Paso C: Instalar las dependencias de tu proyecto
+
     - name: Instalar dependencias
       run: npm install
 
-    # Paso D: Ejecutar las pruebas (asumiendo que tienes un script "test" en tu package.json)
-    - name: Ejecutar pruebas
-      run: npm test
+    - name: Generar cliente de Prisma
+      run: npx prisma generate
+
+
+    - name: Ejecutar Lint
+      run: npm run lint
+    
+    - name: Verificar Build
+      run: npm run build
+      
+    ## Falta crear test
