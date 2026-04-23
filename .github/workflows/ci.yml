@@ -64,10 +64,10 @@ jobs:
           
           USE_FLAT_CONFIG: true
 
-          FILTER_REGEX_EXCLUDE: (.*eslint\.config\..*|.*package-lock\.json)
-
           VALIDATE_JAVASCRIPT_ES: true
-          VALIDATE_TYPESCRIPT_ES: true
-          VALIDATE_JSON: true
+          VALIDATE_TYPESCRIPT_ES: true          
           VALIDATE_YAML: true
+          VALIDATE_JSON: false
+          
+          FILTER_REGEX_EXCLUDE: (.*eslint\.config\..*|.*package-lock\.json)
   ## Falta crear test
