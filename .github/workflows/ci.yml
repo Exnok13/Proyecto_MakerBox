@@ -48,5 +48,15 @@ jobs:
     - name: Ejecutar Lint
       run: npm run lint
   
-
-    ## Falta crear test
+  analisis-calidad:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correr Super-Linter
+        uses: github/super-linter@v5
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+  ## Falta crear test
