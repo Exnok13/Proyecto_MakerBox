@@ -30,7 +30,7 @@ jobs:
       run: npm install
 
     - name: Generar cliente de Prisma
-      run: npx prisma generate
+      run: npx prisma generate --schema=./backend/prisma/schema.prisma
 
 
     - name: Ejecutar Lint
@@ -38,5 +38,5 @@ jobs:
     
     - name: Verificar Build
       run: npm run build
-      
+
     ## Falta crear test
