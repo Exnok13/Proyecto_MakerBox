@@ -3,6 +3,13 @@ import js from '@eslint/js';
 export default [
   js.configs.recommended, // Activa las reglas básicas (evita errores comunes)
   {
+    // Ignorar carpetas pesadas o automáticas
+    // Se agregaron nuevas ignoraciones
+
+    ignores: ['**/generated/**', '**/fronted/dist/**','node_modules/', 'dist/', 'build/']
+  
+  },
+  {
    
     rules: {
       'no-unused-vars': 'warn',
@@ -12,11 +19,6 @@ export default [
       'no-var': 'error',             // Prohibido usar 'var'
       'prefer-const': 'error'        // Obliga a usar 'const' si no cambia
     }
-  },
-  {
-    // Ignorar carpetas pesadas o automáticas
-    // Se agregaron nuevas ignoraciones
-    ignores: ['node_modules/', 'dist/', 'build/','**/generated/**', '**/fronted/dist/**']
-  
   }
+  
 ];
