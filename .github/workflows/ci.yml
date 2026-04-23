@@ -61,9 +61,16 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
           USE_FLAT_CONFIG: true
 
-          VALIDATE_JAVASCRIPT_ESLINT: true
+          FILTER_REGEX_EXCLUDE: (.*eslint\.config\..*|.*package-lock\.json)
+
+          VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_TYPESCRIPT_ES: true
+          VALIDATE_JSON: true
+          VALIDATE_YAML: true
+
           VALIDATE_JAVASCRIPT_STANDARD: false
+          VALIDATE_TYPESCRIPT_STANDARD: false
   ## Falta crear test
