@@ -24,7 +24,7 @@ out/
 # Base de datos (aun no tenemos una, pero por si acaso)
 *.db
 *.db-journal
-/prisma/migrations/
+
 
 # Archivos del sistema y editores
 .DS_Store
