@@ -11,3 +11,26 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+model User {
+  id        String   @id @default(uuid()) 
+  email     String   @unique             
+  name      String                        
+
+  projects  Project[] 
+}
+
+// --- TABLA 2: PROYECTOS ---
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  // LLAVE FORÁNEA (Foreign Key)
+
+  authorId    String   
+
+  author      User     @relation(fields: [authorId], references: [id])
+}
+
+
