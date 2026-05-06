@@ -1,0 +1,53 @@
+name: CI 
+
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+
+jobs:
+  build-and-test:
+ 
+    runs-on: ubuntu-latest
+
+ 
+    steps:
+ 
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+ 
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+
+    - name: Instalar dependencias
+      run: npm install
+
+    - name: Instalar dependencias del Backend
+      run: cd backend && npm install
+    
+    - name: Instalar dependencias del fronted
+      run: cd fronted && npm install
+
+    - name: Verificar Build del Backend
+      run: cd backend && npm run build
+
+    - name: Verificar Build del Frontend
+      run: cd fronted && npm run build
+
+    - name: Generar cliente de Prisma
+      run: npx prisma generate --schema=./backend/prisma/schema.prisma
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    - name: Ejecutar Lint
+      run: npm run lint
+  
+
+    ## Falta crear test

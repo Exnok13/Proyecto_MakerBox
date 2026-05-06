@@ -3,11 +3,133 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
+
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" 
 }
+
+
+enum RolUsuario {
+  ADMIN
+  AYUDANTE
+  ESTUDIANTE
+  PROFESOR
+  EXTERNO
+}
+
+enum EstadoSolicitud {
+  PENDIENTE
+  APROBADA
+  RECHAZADA
+  EN_IMPRESION
+  FINALIZADA
+}
+
+enum PrioridadSolicitud {
+  ALTA
+  MEDIA
+  BAJA
+}
+
+enum EstadoReserva {
+  CONFIRMADA
+  CANCELADA
+}
+
+
+model Usuario {
+  id               String       @id @default(uuid())
+  rut              String       @unique
+  nombreCompleto   String
+  correo           String       @unique
+  password         String
+  rol              RolUsuario   @default(ESTUDIANTE)
+  
+  // Relaciones
+  solicitudes      SolicitudImpresion[]
+  comentarios      ComentarioInterno[]
+  reservas         ReservaSala[]
+  cursosDictados   Curso[]      @relation("ProfesorCurso")
+}
+
+model SolicitudImpresion {
+  id               String             @id @default(uuid())
+  nombreProyecto   String
+  descripcion      String?            @db.Text
+  estado           EstadoSolicitud    @default(PENDIENTE)
+  prioridad        PrioridadSolicitud @default(MEDIA)
+  archivoDiseno3D  String             // Ruta o URL del archivo fuente
+  archivoStl       String             // Ruta o URL del archivo .stl
+  fechaSolicitud   DateTime           @default(now())
+  fechaActualizacion DateTime         @updatedAt // Ideal para disparar notificaciones
+  
+  // Llaves foráneas y relaciones
+  autorId          String
+  autor            Usuario            @relation(fields: [autorId], references: [id])
+  
+  grupoId          String?
+  grupo            Grupo?             @relation(fields: [grupoId], references: [id])
+
+  comentarios      ComentarioInterno[]
+}
+
+model ComentarioInterno {
+  id               String             @id @default(uuid())
+  comentario       String             @db.Text
+  fechaCreacion    DateTime           @default(now())
+  
+  // Llaves foráneas y relaciones
+  solicitudId      String
+  solicitud        SolicitudImpresion @relation(fields: [solicitudId], references: [id], onDelete: Cascade)
+  
+  ayudanteId       String
+  ayudante         Usuario            @relation(fields: [ayudanteId], references: [id])
+}
+
+model Inventario {
+  id               String   @id @default(uuid())
+  tipoMaterial     String   // ej: PLA, ABS, TPU
+  color            String
+  gramosDisponibles Float   @default(0)
+  fechaActualizacion DateTime @updatedAt
+}
+
+model ReservaSala {
+  id               String        @id @default(uuid())
+  fechaReserva     DateTime      @db.Date
+  horaInicio       DateTime      @db.Time
+  horaFin          DateTime      @db.Time
+  estado           EstadoReserva @default(CONFIRMADA)
+  
+  // Llaves foráneas y relaciones
+  usuarioId        String
+  usuario          Usuario       @relation(fields: [usuarioId], references: [id])
+}
+
+
+model Curso {
+  id               String   @id @default(uuid())
+  nombreModulo     String
+  
+  // Relaciones
+  profesorId       String
+  profesor         Usuario  @relation("ProfesorCurso", fields: [profesorId], references: [id])
+  grupos           Grupo[]
+}
+
+model Grupo {
+  id               String   @id @default(uuid())
+  nombreGrupo      String
+  
+  // Relaciones
+  cursoId          String
+  curso            Curso    @relation(fields: [cursoId], references: [id])
+  
+  solicitudes      SolicitudImpresion[]
+}
+
+
