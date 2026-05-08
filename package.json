@@ -10,6 +10,6 @@
   "lint:fix": "eslint . --fix"
   },
   "lint-staged": {
-  "*.{js,jsx,ts,tsx}": "eslint --fix"
+  "*.{js,jsx,ts,tsx}": "npx eslint --fix"
   }
 }
