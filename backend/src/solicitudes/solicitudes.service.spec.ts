@@ -36,7 +36,7 @@ describe('SolicitudesService', () => {
       idUsuario: 1,
     };
     const respuestaFingidaDeBD = {
-      id: 100,
+      id: '100',
       ...datosNuevaSolicitud,
       estado: 'PENDIENTE',
     };
@@ -53,7 +53,7 @@ describe('SolicitudesService', () => {
   });
 
   it('debería cerrar (finalizar) la solicitud correctamente', async () => {
-    const idSolicitud = 100;
+    const idSolicitud = '100';
     const respuestaFingidaCerrada = {
       id: idSolicitud,
       nombreProyecto: 'Engranaje Robot',
