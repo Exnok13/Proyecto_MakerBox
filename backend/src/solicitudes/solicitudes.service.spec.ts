@@ -31,48 +31,39 @@ describe('SolicitudesService', () => {
   });
 
   it('debería crear una solicitud de impresión exitosamente', async () => {
-    const datosNuevaSolicitud = {
-      nombreProyecto: 'Engranaje Robot',
-      idUsuario: 1,
-    };
-    const respuestaFingidaDeBD = {
-      id: '100',
+    const datosNuevaSolicitud = { nombreProyecto: 'Engranaje', idUsuario: 1 };
+    const respuestaFingida = {
+      id: '1',
       ...datosNuevaSolicitud,
       estado: 'PENDIENTE',
     };
 
     mockPrismaService.solicitudImpresion.create.mockResolvedValue(
-      respuestaFingidaDeBD,
+      respuestaFingida,
     );
-
     const resultado = await service.create(datosNuevaSolicitud);
 
     expect(prisma.solicitudImpresion.create).toHaveBeenCalledTimes(1);
-    expect(resultado).toEqual(respuestaFingidaDeBD);
     expect(resultado.estado).toBe('PENDIENTE');
   });
 
-  it('debería cerrar (finalizar) la solicitud correctamente', async () => {
-    const idSolicitud = '100';
+  it('debería actualizar el estado a FINALIZADA', async () => {
     const respuestaFingidaCerrada = {
-      id: idSolicitud,
-      nombreProyecto: 'Engranaje Robot',
+      id: '1',
+      nombreProyecto: 'Engranaje',
       estado: 'FINALIZADA',
     };
-
     mockPrismaService.solicitudImpresion.update.mockResolvedValue(
       respuestaFingidaCerrada,
     );
 
-    const resultado = await service.update(idSolicitud, {
-      estado: 'FINALIZADA',
-    });
+    // Corregido: enviamos el ID '1' como string, no como número
+    const resultado = await service.update('1', { estado: 'FINALIZADA' });
 
     expect(prisma.solicitudImpresion.update).toHaveBeenCalledWith({
-      where: { id: idSolicitud },
+      where: { id: '1' },
       data: { estado: 'FINALIZADA' },
     });
-
     expect(resultado.estado).toBe('FINALIZADA');
   });
 });

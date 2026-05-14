@@ -1,13 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, Patch, Param } from '@nestjs/common';
 import { SolicitudesService } from './solicitudes.service';
 import { CreateSolicitudeDto } from './dto/create-solicitude.dto';
 import { UpdateSolicitudeDto } from './dto/update-solicitude.dto';
@@ -21,26 +12,11 @@ export class SolicitudesController {
     return this.solicitudesService.create(createSolicitudeDto);
   }
 
-  @Get()
-  findAll() {
-    return this.solicitudesService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.solicitudesService.findOne(+id);
-  }
-
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateSolicitudeDto: UpdateSolicitudeDto,
   ) {
-    return this.solicitudesService.update(+id, updateSolicitudeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.solicitudesService.remove(+id);
+    return this.solicitudesService.update(id, updateSolicitudeDto);
   }
 }
