@@ -2,14 +2,14 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^10.1.0"
   },
-   
   "scripts": {
-  "lint": "eslint .",
-  "lint:fix": "eslint . --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "lint-staged": {
-  "*.{js,jsx,ts,tsx}": "npx eslint --fix"
+    "*.{js,jsx,ts,tsx}": "npx eslint --fix"
   }
 }

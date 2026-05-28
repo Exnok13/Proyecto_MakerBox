@@ -10,6 +10,21 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_password
+          POSTGRES_DB: makerbox_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout del código
       uses: actions/checkout@v4
@@ -24,8 +39,7 @@ jobs:
 
     - name: Instalar dependencias del Backend
       run: cd backend && npm install
-    
-    # Nota: Asegúrate de que la carpeta se llame 'fronted' o cámbialo a 'frontend'
+
     - name: Instalar dependencias del frontend
       run: cd fronted && npm install
 
@@ -43,11 +57,26 @@ jobs:
     - name: Ejecutar Lint
       run: npm run lint
       
-    - name: Ejecutar Pruebas Unitarias y Cobertura (Backend)
-      run: cd backend && npm run test:cov
+    - name: Desplegar esquema de Prisma en Base de Datos de Pruebas
+      env:
+        DATABASE_URL: postgresql://db_user:db_password@localhost:5432/makerbox_test?schema=public
+      run: |
+        cd backend
+        npx prisma migrate deploy
 
-    - name: Subir reporte a Codecov
+
+    - name: Ejecutar Pruebas Unitarias e Integración con Cobertura Independiente
+      env:
+        DATABASE_URL: postgresql://db_user:db_password@localhost:5432/makerbox_test?schema=public
+      run: |
+        cd backend
+        # Forzamos directorios separados por CLI para que un reporte no borre al otro
+        npm run test:cov -- --coverageDirectory=coverage/unit
+        npm run test:e2e:cov -- --coverageDirectory=coverage/e2e
+
+    - name: Subir reportes a Codecov
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        directory: ./backend/coverage
+      
+        fail_ci_if_error: true

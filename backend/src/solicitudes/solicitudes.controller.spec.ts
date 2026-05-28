@@ -9,11 +9,7 @@ describe('SolicitudesController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SolicitudesController],
-      providers: [
-        SolicitudesService,
-        // Le entregamos un simulador vacío a NestJS para que no se queje
-        { provide: PrismaService, useValue: {} },
-      ],
+      providers: [SolicitudesService, { provide: PrismaService, useValue: {} }],
     }).compile();
 
     controller = module.get<SolicitudesController>(SolicitudesController);

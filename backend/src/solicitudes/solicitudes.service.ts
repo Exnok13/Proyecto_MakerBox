@@ -15,7 +15,6 @@ export class SolicitudesService {
     });
   }
 
-  // Corregido: id ahora es 'string' para coincidir con Prisma
   async update(id: string, datosActualizar: any) {
     return await this.prisma.solicitudImpresion.update({
       where: { id },
