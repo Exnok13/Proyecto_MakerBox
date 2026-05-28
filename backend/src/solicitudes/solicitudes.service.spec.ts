@@ -57,7 +57,6 @@ describe('SolicitudesService', () => {
       respuestaFingidaCerrada,
     );
 
-    // Corregido: enviamos el ID '1' como string, no como número
     const resultado = await service.update('1', { estado: 'FINALIZADA' });
 
     expect(prisma.solicitudImpresion.update).toHaveBeenCalledWith({

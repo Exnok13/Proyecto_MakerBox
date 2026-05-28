@@ -1,10 +1,9 @@
 import js from '@eslint/js';
 
 export default [
-  js.configs.recommended, // Activa las reglas básicas (evita errores comunes)
+  js.configs.recommended,
   {
-    // Ignorar carpetas pesadas o automáticas
-    // Se agregaron nuevas ignoraciones
+
 
     ignores: [
     'backend/generated/**', 
