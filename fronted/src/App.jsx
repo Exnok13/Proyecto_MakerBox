@@ -1,4 +1,6 @@
-import Login from './views/Login/Login'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './views/Login/Login';
+import Front_Solicitudes from './views/Login/Front_Solicitudes';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import './App.css';
@@ -6,15 +8,22 @@ import './App.css';
 function App() {
   
   return (
-    
-  
-    <div className="app-container">
-      <Header />
-      
-     <Login />
+    <Router>
+      <div className="app-container">
+        {/* Componente estático global */}
+        <Header />
+        
+        {/* Gestor de rutas dinámicas */}
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/solicitudes" element={<Front_Solicitudes />} />
+        </Routes>
 
-      <Footer />
-    </div>
+        {/* Componente estático global */}
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

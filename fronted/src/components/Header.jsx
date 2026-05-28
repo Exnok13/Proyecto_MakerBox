@@ -1,22 +1,23 @@
 import './Layout-Header.css';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
     <header className="main-header">
       {/* Logo Visible */}
       <div className="logo-container">
-        <a href="/">
-  
+        <Link to="/">
           <span className="logo-text">MAKER<span>BOX</span></span>
-        </a>
+        </Link>
       </div>
 
       {/*Botones Clicables */}
       <nav className="nav-menu">
         <ul className="nav-list">
-          <li><a href="#inicio" className="nav-button">Inicio</a></li>
-          <li><a href="#proyectos" className="nav-button">Proyectos</a></li>
-          <li><a href="#contacto" className="nav-button">Login</a></li>
+          <li><Link to="/" className="nav-button">Inicio</Link></li>
+          <li><Link to="/" className="nav-button">Proyectos</Link></li>
+          <li><Link to="/login" className="nav-button">Login</Link></li>
+          <li><Link to="/solicitudes" className="nav-button">Solicitudes</Link></li>
         </ul>
       </nav>
     </header>
