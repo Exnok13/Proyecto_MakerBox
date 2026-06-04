@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { PrismaService } from '../prisma/prisma.service'; // ¡Cambio aquí! Salimos de 'auth' y entramos a 'prisma'
+import { PrismaService } from '../prisma/prisma.service';
 
 describe('AuthService - Registro de Estudiante', () => {
   let service: AuthService;
@@ -41,7 +41,7 @@ describe('AuthService - Registro de Estudiante', () => {
     };
 
     (prisma.usuario.create as jest.Mock).mockResolvedValue(mockRespuestaPrisma);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
     const resultado = await service.register(datosRegistro);
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(prisma.usuario.create).toHaveBeenCalledWith({
@@ -51,7 +51,7 @@ describe('AuthService - Registro de Estudiante', () => {
         rol: 'ESTUDIANTE',
       }),
     });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
     expect(resultado.correo).toBe(datosRegistro.correo);
   });
 });
