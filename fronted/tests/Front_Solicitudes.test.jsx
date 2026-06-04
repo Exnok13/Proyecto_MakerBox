@@ -4,7 +4,6 @@ import Front_Solicitudes from '../src/views/Front_Solicitudes/Front_Solicitudes.
 
 describe('Pruebas de Integración: Front_Solicitudes', () => {
   it('Debe rellenar los campos, subir archivos y enviar el formulario con éxito', () => {
-    //1.PREPARAR: Renderizamos el componente y "secuestramos" el alert para que no bloquee la prueba
     const mockAlerta = vi.spyOn(window, 'alert').mockImplementation(() => {});
     render(<Front_Solicitudes />);
 

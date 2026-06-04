@@ -26,7 +26,13 @@ export default function Front_Solicitudes() {
   const enviarFormulario = (evento) => {
     evento.preventDefault();
     console.log('Datos listos para enviar:', datosFormulario);
-    alert('¡Tu solicitud ha sido registrada!');
+    alert('¡Tu solicitud ha sido registrada correctamente!');
+    setDatosFormulario({
+      nombreProyecto: '',
+      descripcion: '',
+      archivoStl: null,
+      archivoObj: null,
+    });
     // Aquí iría el apartado para enviar los datos al backend
   };
 
