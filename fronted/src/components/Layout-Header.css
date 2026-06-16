@@ -23,7 +23,7 @@
 }
 
 .logo-text span {
-  color: #1b00cc; 
+  color: #cc0000; 
 }
 
 
@@ -44,7 +44,7 @@
 
 /* Cambio de color al pasar el cursor*/
 .nav-button:hover {
-  background-color: #646cff; 
+  background-color: #cc0000; 
   color: white;            
   transform: translateY(-2px); 
 }

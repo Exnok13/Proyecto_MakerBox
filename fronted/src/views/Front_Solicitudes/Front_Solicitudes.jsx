@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './Front_Solicitudes.css';
 
 export default function Front_Solicitudes() {
-  // Estado con un nombre claro que indica su propósito
+
   const [datosFormulario, setDatosFormulario] = useState({
     nombreProyecto: '',
     descripcion: '',
@@ -10,19 +10,16 @@ export default function Front_Solicitudes() {
     archivoObj: null,
   });
 
-  // Función específica para los inputs de escritura (texto)
   const manejarCambioTexto = (evento) => {
     const { name, value } = evento.target;
     setDatosFormulario({ ...datosFormulario, [name]: value });
   };
 
-  // Función específica para la subida de documentos
   const manejarCambioArchivo = (evento) => {
     const { name, files } = evento.target;
     setDatosFormulario({ ...datosFormulario, [name]: files[0] });
   };
 
-  // Función final que procesa el envío
   const enviarFormulario = (evento) => {
     evento.preventDefault();
     console.log('Datos listos para enviar:', datosFormulario);
@@ -39,7 +36,6 @@ export default function Front_Solicitudes() {
   return (
     <div className="page-wrapper">
       
-      {/* Contenido principal centrado */}
       <main className="main-content">
         <div className="form-card">
           <h1 className="form-title">Solicitud de Impresión 3D</h1>
