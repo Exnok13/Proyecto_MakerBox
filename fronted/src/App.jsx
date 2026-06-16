@@ -3,7 +3,7 @@ import Login from './views/Login/Login';
 import Front_Solicitudes from './views/Front_Solicitudes/Front_Solicitudes';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Registro from './views/Registro/Registro';
+import Registro from './views/Registrotemp/Registro';
 import './App.css';
 
 function App() {
