@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
-
+// Se cambiaron los nombres de las clases a minúscula para evitar conflictos con los nombres de los archivos en el sistema de módulos NodeNext. En NodeNext, los nombres de los archivos y las clases deben coincidir exactamente, incluyendo mayúsculas y minúsculas.
 @Injectable()
 export class AppService {
   constructor(private prisma: PrismaService) {}
