@@ -3,6 +3,7 @@ import Login from './views/Login/Login';
 import Front_Solicitudes from './views/Front_Solicitudes/Front_Solicitudes';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Registro from './views/Registro/Registro';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/registro" element={<Registro />} />
           <Route path="/solicitudes" element={<Front_Solicitudes />} />
         </Routes>
 
