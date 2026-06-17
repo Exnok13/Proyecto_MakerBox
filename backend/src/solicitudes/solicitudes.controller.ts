@@ -14,7 +14,7 @@ import { extname } from 'path';
 import { SolicitudesService } from './solicitudes.service';
 import { CreateSolicitudeDto } from './dto/create-solicitude.dto';
 import { EstadoSolicitud } from '@prisma/client';
-
+import { ActualizarEstadoDto } from './dto/Cambiar_Solicitudes.dto';
 /* eslint-disable */
 @Controller('solicitudes')
 export class SolicitudesController {
@@ -57,6 +57,15 @@ export class SolicitudesController {
     @Body('estado') estado: EstadoSolicitud,
   ) {
     return (this.solicitudesService as any).updateEstado(id, estado);
+  }
+
+  @Patch(':id/estado')
+  async actualizarEstado(
+    @Param('id') id: string, 
+    @Body() body: ActualizarEstadoDto
+  ) {
+    console.log(`Actualizando solicitud ${id} al estado: ${body.estado}`);
+    return this.solicitudesService.actualizarEstado(id, body.estado);
   }
 }
 /* eslint-enable @typescript-eslint/no-unsafe-call */
