@@ -4,7 +4,6 @@ import { SolicitudesService } from './solicitudes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { EstadoSolicitud } from '@prisma/client';
 
-// 1. Añadimos findMany para que el mock coincida 100% con tu servicio real
 const mockPrismaService = {
   solicitudImpresion: {
     create: jest.fn(),
@@ -55,7 +54,6 @@ describe('SolicitudesService', () => {
       respuestaFingida,
     );
 
-    // 2. Tipado explícito para apagar los errores de ESLint en CI
     const resultado = (await service.create(datosNuevaSolicitud)) as {
       estado: string;
     };
