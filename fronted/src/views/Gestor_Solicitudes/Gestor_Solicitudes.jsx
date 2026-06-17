@@ -28,7 +28,7 @@ export default function GestionSolicitudes() {
     cargarSolicitudes();
   }, []);
 
-    const estadosPermitidos = ['RETENIDO', 'APROBADO', 'RECHAZADO', 'IMPRIMIENDO', 'TERMINADO'];
+    const estadosPermitidos = ['PENDIENTE', 'APROBADA', 'RECHAZADA', 'EN_IMPRESION', 'FINALIZADA'];
     
     const manejarCambioEstado = async (id, nuevoEstado) => {
     setSolicitudes(solicitudesPrevias =>

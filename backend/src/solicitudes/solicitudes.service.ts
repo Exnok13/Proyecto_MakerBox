@@ -30,4 +30,11 @@ export class SolicitudesService {
       data: { estado },
     });
   }
+
+  async actualizarEstado(id: string, estado: EstadoSolicitud) {
+    return this.prisma.solicitudImpresion.update({
+      where: { id: id },
+      data: { estado: estado },
+    });
+  }
 }
