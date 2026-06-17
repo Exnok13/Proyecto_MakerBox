@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import './Front_Solicitudes.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Front_Solicitudes() {
+
+  const navegar = useNavigate();
 
   const [datosFormulario, setDatosFormulario] = useState({
     nombreProyecto: '',
@@ -20,17 +23,52 @@ export default function Front_Solicitudes() {
     setDatosFormulario({ ...datosFormulario, [name]: files[0] });
   };
 
-  const enviarFormulario = (evento) => {
+  const enviarFormulario = async (evento) => {
     evento.preventDefault();
-    console.log('Datos listos para enviar:', datosFormulario);
-    alert('¡Tu solicitud ha sido registrada correctamente!');
-    setDatosFormulario({
-      nombreProyecto: '',
-      descripcion: '',
-      archivoStl: null,
-      archivoObj: null,
-    });
-    // Aquí iría el apartado para enviar los datos al backend
+
+    const idUsuarioActivo = localStorage.getItem('usuarioActivoId');
+
+    if (!idUsuarioActivo) {
+      alert('Debes iniciar sesión para enviar una solicitud.');
+      navegar('/login'); 
+      return; 
+    }
+    const formData = new FormData();
+    formData.append('nombreProyecto', datosFormulario.nombreProyecto);
+    formData.append('descripcion', datosFormulario.descripcion);
+    formData.append('archivoStl', datosFormulario.archivoStl);
+    
+    if (datosFormulario.archivoObj) {
+      formData.append('archivoDiseno3D', datosFormulario.archivoObj);
+    }
+
+    formData.append('autorId', idUsuarioActivo);
+
+    try {
+      const respuesta = await fetch('http://localhost:3000/solicitudes', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (respuesta.ok) {
+        alert('¡Tu solicitud ha sido registrada correctamente!');
+        setDatosFormulario({
+          nombreProyecto: '',
+          descripcion: '',
+          archivoStl: null,
+          archivoObj: null,
+        });
+      } else {
+        const infoError = await respuesta.json();
+         
+        console.error('El servidor rechazó la petición:', infoError);
+        alert('Hubo un error al procesar tu solicitud. Revisa la consola.');
+      }
+    } catch (error) {
+       
+      console.error('Error de red o CORS:', error);
+      alert('No se pudo conectar con el servidor backend.');
+    }
   };
 
   return (

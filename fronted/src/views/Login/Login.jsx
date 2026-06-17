@@ -23,8 +23,11 @@ function Login() {
       });
 
       if (response.ok) {
+
         const data = await response.json();
         console.log('¡Login exitoso!', data);
+        localStorage.setItem('usuarioActivoId', data.id);
+        
         alert(`¡Bienvenido ${data.nombreCompleto}!`);
         if (data.rol === 'ESTUDIANTE') {
           navigate('/solicitudes');
@@ -44,7 +47,6 @@ function Login() {
     <div style={{ padding: '40px', textAlign: 'center' }}>
       <h1 style={{ fontSize: '24px', color: '#8d0000' }}>MakerBox</h1>
       
-      {/* 3. Envolvemos en un form con onSubmit */}
       <form onSubmit={handleSubmit} style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
         
         <input 

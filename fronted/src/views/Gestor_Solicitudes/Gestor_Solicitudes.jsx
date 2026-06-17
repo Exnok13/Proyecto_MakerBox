@@ -1,22 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Gestor_Solicitudes.css';
 
 export default function GestionSolicitudes() {
-    const [solicitudes, setSolicitudes] = useState([
-        //Datos que vendrían de una API o base de datos
-    ]);
+    const [solicitudes, setSolicitudes] = useState([]);
 
-    const estadosPermitidos = ['Retenido', 'Aprobado', 'Rechazado', 'Imprimiendo', 'Terminado'];
-
-    const manejarCambioEstado = (id, nuevoEstado) => {
-        setSolicitudes(solicitudesPrevias =>
-        solicitudesPrevias.map(solicitud =>
-            solicitud.id === id ? { ...solicitud, estado: nuevoEstado } : solicitud
-        )
-        );
-        
-        console.log(`Solicitud ${id} cambiada al estado: ${nuevoEstado}`);
+    useEffect(() => {
+    const cargarSolicitudes = async () => {
+      try {
+        const respuesta = await fetch('http://localhost:3000/solicitudes');
+        if (respuesta.ok) {
+          const datos = await respuesta.json();
+          if (Array.isArray(datos)) {
+            setSolicitudes(datos);
+          } else {
+            setSolicitudes([]);
+          }
+        } else {
+           
+          console.error('Error al leer las solicitudes del servidor');
+        }
+      } catch (error) {
+         
+        console.error('Error de red al conectar con el backend:', error);
+      }
     };
+
+    cargarSolicitudes();
+  }, []);
+
+    const estadosPermitidos = ['RETENIDO', 'APROBADO', 'RECHAZADO', 'IMPRIMIENDO', 'TERMINADO'];
+    
+    const manejarCambioEstado = async (id, nuevoEstado) => {
+    setSolicitudes(solicitudesPrevias =>
+      solicitudesPrevias.map(solicitud =>
+        solicitud.id === id ? { ...solicitud, estado: nuevoEstado } : solicitud
+      )
+    );
+
+    try {
+      const respuesta = await fetch(`http://localhost:3000/solicitudes/${id}/estado`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ estado: nuevoEstado }),
+      });
+
+      if (!respuesta.ok) {
+        console.error('El backend rechazó el cambio de estado');
+    }
+    } catch (error) {
+      console.error('Error de red al intentar actualizar:', error);
+    }
+  };
 
     return (
         <div className="gestion-container">
@@ -34,13 +70,16 @@ export default function GestionSolicitudes() {
             </thead>
             <tbody>
             {solicitudes.map((solicitud) => (
+
                 <tr key={solicitud.id} className={`fila-estado-${solicitud.estado.toLowerCase()}`}>
-                <td>{solicitud.nombreEstudiante}</td>
+                
+                <td>{solicitud.autor?.nombreCompleto || 'Usuario Desconocido'}</td>
                 <td>{solicitud.nombreProyecto}</td>
+                
                 <td>
                     <div className="archivos-links">
                     {solicitud.archivoStl && <span className="badge stl">STL: {solicitud.archivoStl}</span>}
-                    {solicitud.archivoObj && <span className="badge obj">OBJ: {solicitud.archivoObj}</span>}
+                    {solicitud.archivoDiseno3D && <span className="badge obj">OBJ: {solicitud.archivoDiseno3D}</span>}
                     </div>
                 </td>
                 <td>

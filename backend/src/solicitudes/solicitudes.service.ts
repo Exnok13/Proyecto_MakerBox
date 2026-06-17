@@ -1,24 +1,33 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
+import { CreateSolicitudeDto } from './dto/create-solicitude.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { EstadoSolicitud } from '@prisma/client';
 
 @Injectable()
 export class SolicitudesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(datosNuevaSolicitud: any) {
-    return await this.prisma.solicitudImpresion.create({
-      data: {
-        ...datosNuevaSolicitud,
-        estado: 'PENDIENTE',
-      },
+  async create(createSolicitudeDto: CreateSolicitudeDto) {
+    return this.prisma.solicitudImpresion.create({
+      data: createSolicitudeDto,
     });
   }
 
-  async update(id: string, datosActualizar: any) {
+  async findAll() {
+    return this.prisma.solicitudImpresion.findMany({
+      include: {
+        autor: {
+          select: { nombreCompleto: true },
+        },
+      },
+      orderBy: { fechaSolicitud: 'desc' },
+    });
+  }
+
+  async updateEstado(id: string, estado: EstadoSolicitud) {
     return await this.prisma.solicitudImpresion.update({
       where: { id },
-      data: datosActualizar,
+      data: { estado },
     });
   }
 }
