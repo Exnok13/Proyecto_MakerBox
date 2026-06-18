@@ -60,4 +60,9 @@ describe('AppController', () => {
     expect(appService.loginUsuario).toHaveBeenCalledWith(credenciales);
     expect(resultado.rol).toBe('ESTUDIANTE');
   });
+
+  // Funcionalidad menor
+  it('debería retornar el estado de salud del servidor', () => {
+    expect(appController.verificarEstado()).toEqual({ status: 'MakerBox API 100% Operativa' });
+  });
 });
