@@ -1,5 +1,5 @@
 import { Controller, Post } from '@nestjs/common';
-import { Body } from '@nestjs/common';
+import { Body, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { RegistroDto } from './dto/registro.dto';
 import { LoginDto } from './dto/login.dto';
@@ -17,5 +17,9 @@ export class AppController {
   async login(@Body() body: LoginDto) {
     console.log('Intento de login para:', body.correo);
     return this.appService.loginUsuario(body);
+  }
+  @Get('ping')
+  verificarEstado() {
+    return { status: 'MakerBox API 100% Operativa' };
   }
 }
