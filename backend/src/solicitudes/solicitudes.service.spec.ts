@@ -83,4 +83,20 @@ describe('SolicitudesService', () => {
     });
     expect(resultado.estado).toBe('TERMINADO');
   });
+
+  it('debería obtener todas las solicitudes', async () => {
+    // 1. Simulamos una lista de solicitudes que devolvería la base de datos
+    const mockSolicitudes = [
+      { id: '1', nombreProyecto: 'Engranaje', estado: 'PENDIENTE' },
+      { id: '2', nombreProyecto: 'Carcasa', estado: 'EN_IMPRESION' },
+    ];
+
+    mockPrismaService.solicitudImpresion.findMany.mockResolvedValue(
+      mockSolicitudes,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const resultado = await service.findAll();
+    expect(prisma.solicitudImpresion.findMany).toHaveBeenCalledTimes(1);
+    expect(resultado).toEqual(mockSolicitudes);
+  });
 });
