@@ -25,16 +25,23 @@ function Login() {
       if (response.ok) {
 
         const data = await response.json();
+
         console.log('¡Login exitoso!', data);
+
         localStorage.setItem('usuarioActivoId', data.id);
-        
+        localStorage.setItem('userRol', data.rol);
+
         alert(`¡Bienvenido ${data.nombreCompleto}!`);
+
         if (data.rol === 'ESTUDIANTE') {
           navigate('/solicitudes');
+
         } else if (data.rol === 'AYUDANTE') {
-         alert('pagina en proceso.');
+          navigate('/gestor-solicitudes');
+ 
         } else {
-          alert('pagina en proceso.');
+          alert('Rol no reconocido. Página en proceso.');
+
         }
       }
     } catch (error) {
