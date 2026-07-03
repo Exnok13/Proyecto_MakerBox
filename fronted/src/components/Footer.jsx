@@ -8,11 +8,10 @@ export default function Footer() {
        
         <div className="footer-info">
           <p>&copy; {new Date().getFullYear()} <strong>MakerBox</strong></p>
-      
         </div>
 
-        {/* Requisito: Iconos de Redes Sociales */}
         <div className="social-icons">
+          <a></a>
           <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
             <FaInstagram />
           </a>

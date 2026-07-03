@@ -23,7 +23,7 @@
 .assignee-tag {
   display: block;
   font-size: 0.8rem;
-  color: #646cff;
+  color: #cc0000;
   margin-top: 5px;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .social-icons a:hover {
-  color: #646cff;
+  color: #cc0000;
   transform: translateY(-3px); 
 }
 

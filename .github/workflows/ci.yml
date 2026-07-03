@@ -7,24 +7,10 @@ on:
     branches: [ "main", "develop" ]
 
 jobs:
-  build-and-test:
+  ## Job para descargar las dependencias 
+  build:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: db_user
-          POSTGRES_PASSWORD: db_password
-          POSTGRES_DB: makerbox_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+     
     steps:
     - name: Checkout del código
       uses: actions/checkout@v4
@@ -56,27 +42,90 @@ jobs:
 
     - name: Ejecutar Lint
       run: npm run lint
-      
-    - name: Desplegar esquema de Prisma en Base de Datos de Pruebas
+
+  ## Job para pruebas unitarias
+  pruebas-unitarias:
+    runs-on: ubuntu-latest
+    ## Necesita para el primer job para que corra
+    needs: build 
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Instalar dependencias del Backend
+      run: cd backend && npm install
+
+    - name: Generar cliente de Prisma
+      run: cd backend && npx prisma generate
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    - name: Ejecutar Pruebas Unitarias
+      run: cd backend && npm run test:cov -- --coverageDirectory=coverage/unit
+
+    - name: Subir reportes a Codecov (Unit)
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: false
+  ## Job para pruebas de integración
+  integracion-test:
+    runs-on: ubuntu-latest
+    ## Necesita para el primer job para que corra
+    needs: build
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: db_user
+          POSTGRES_PASSWORD: db_password
+          POSTGRES_DB: makerbox_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Instalar dependencias del Backend
+      run: cd backend && npm install
+
+    - name: Generar cliente de Prisma
+      run: cd backend && npx prisma generate
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    - name: Desplegar esquema de Prisma en BD de Pruebas
       env:
         DATABASE_URL: postgresql://db_user:db_password@localhost:5432/makerbox_test?schema=public
       run: |
         cd backend
         npx prisma migrate deploy
 
-
-    - name: Ejecutar Pruebas Unitarias e Integración con Cobertura Independiente
+    - name: Ejecutar Pruebas de Integración (e2e)
       env:
         DATABASE_URL: postgresql://db_user:db_password@localhost:5432/makerbox_test?schema=public
       run: |
         cd backend
-        # Forzamos directorios separados por CLI para que un reporte no borre al otro
-        npm run test:cov -- --coverageDirectory=coverage/unit
         npm run test:e2e:cov -- --coverageDirectory=coverage/e2e
 
-    - name: Subir reportes a Codecov
+    - name: Subir reportes a Codecov (e2e)
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-      
-        fail_ci_if_error: true
+        fail_ci_if_error: false
