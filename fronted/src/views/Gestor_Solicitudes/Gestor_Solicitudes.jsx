@@ -10,7 +10,7 @@ export default function GestionSolicitudes() {
     useEffect(() => {
       const cargarSolicitudes = async () => {
         try {
-          const respuesta = await fetch('http://localhost:3000/solicitudes');
+          const respuesta = await fetch(`${import.meta.env.VITE_API_URL}/solicitudes`);
           if (respuesta.ok) {
             const datos = await respuesta.json();
             if (Array.isArray(datos)) {
@@ -50,7 +50,7 @@ export default function GestionSolicitudes() {
     );
 
     try {
-      const respuesta = await fetch(`http://localhost:3000/solicitudes/${id}/estado`, {
+      const respuesta = await fetch(`${import.meta.env.VITE_API_URL}/solicitudes/${id}/estado`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

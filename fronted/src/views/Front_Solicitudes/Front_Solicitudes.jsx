@@ -45,7 +45,7 @@ export default function Front_Solicitudes() {
     formData.append('autorId', idUsuarioActivo);
 
     try {
-      const respuesta = await fetch('http://localhost:3000/solicitudes', {
+      const respuesta = await fetch(`${import.meta.env.VITE_API_URL}/solicitudes`, {
         method: 'POST',
         body: formData,
       });
